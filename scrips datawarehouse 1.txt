@@ -1,0 +1,554 @@
+USE [ControlVentasWeb_FincaBarillas]
+GO
+/****** Object:  User [AdminUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [AdminUser] FOR LOGIN [AdminLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ClienteUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [ClienteUser] FOR LOGIN [ClienteLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [GerenteUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [GerenteUser] FOR LOGIN [GerenteLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [InsercionUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [InsercionUser] FOR LOGIN [InsercionLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [InventarioUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [InventarioUser] FOR LOGIN [InventarioLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [PedidosYVentasUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [PedidosYVentasUser] FOR LOGIN [PedidosYVentasLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ReporteroUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [ReporteroUser] FOR LOGIN [ReporteroLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [SoporteUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [SoporteUser] FOR LOGIN [SoporteLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [SupervisorUser]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE USER [SupervisorUser] FOR LOGIN [SupervisorLogin] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  DatabaseRole [Administrador]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Administrador]
+GO
+/****** Object:  DatabaseRole [Cliente]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Cliente]
+GO
+/****** Object:  DatabaseRole [Gerente]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Gerente]
+GO
+/****** Object:  DatabaseRole [Insercion]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Insercion]
+GO
+/****** Object:  DatabaseRole [Inventario]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Inventario]
+GO
+/****** Object:  DatabaseRole [PedidosYVentas]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [PedidosYVentas]
+GO
+/****** Object:  DatabaseRole [Reportero]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Reportero]
+GO
+/****** Object:  DatabaseRole [SoporteYMantenimiento]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [SoporteYMantenimiento]
+GO
+/****** Object:  DatabaseRole [Supervisor]    Script Date: 18/06/2025 11:56:01 ******/
+CREATE ROLE [Supervisor]
+GO
+ALTER ROLE [Administrador] ADD MEMBER [AdminUser]
+GO
+ALTER ROLE [Cliente] ADD MEMBER [ClienteUser]
+GO
+ALTER ROLE [Gerente] ADD MEMBER [GerenteUser]
+GO
+ALTER ROLE [Insercion] ADD MEMBER [InsercionUser]
+GO
+ALTER ROLE [Inventario] ADD MEMBER [InventarioUser]
+GO
+ALTER ROLE [PedidosYVentas] ADD MEMBER [PedidosYVentasUser]
+GO
+ALTER ROLE [Reportero] ADD MEMBER [ReporteroUser]
+GO
+ALTER ROLE [SoporteYMantenimiento] ADD MEMBER [SoporteUser]
+GO
+ALTER ROLE [Supervisor] ADD MEMBER [SupervisorUser]
+GO
+/****** Object:  Schema [int]    Script Date: 18/06/2025 11:56:02 ******/
+CREATE SCHEMA [int]
+GO
+/****** Object:  Table [dbo].[DimClientes]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DimClientes](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Cliente] [varchar](50) NOT NULL,
+	[Codigo] [varchar](50) NOT NULL,
+	[Nombres] [varchar](50) NOT NULL,
+	[Apellidos] [varchar](50) NOT NULL,
+	[Telefono] [varchar](50) NOT NULL,
+	[Direccion] [varchar](200) NOT NULL,
+	[Estado] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_DimClientes] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DimFecha]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DimFecha](
+	[FechaId] [int] NOT NULL,
+	[Fecha] [date] NOT NULL,
+	[Anio] [int] NOT NULL,
+	[Mes] [int] NOT NULL,
+	[Dia] [int] NOT NULL,
+	[NombreMes] [nvarchar](20) NOT NULL,
+	[Trimestre] [int] NOT NULL,
+	[DiaSemana] [int] NOT NULL,
+	[NombreDiaSemana] [nvarchar](20) NOT NULL,
+	[SemanaAnio] [int] NOT NULL,
+	[EsFinDeSemana] [bit] NOT NULL,
+	[EsDiaFestivo] [bit] NOT NULL,
+ CONSTRAINT [PK__DimFecha__E526519C04BC8FC0] PRIMARY KEY CLUSTERED 
+(
+	[FechaId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DimPedidos]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DimPedidos](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Pedido] [varchar](50) NOT NULL,
+	[FechaId] [varchar](50) NOT NULL,
+	[Estado] [varchar](32) NOT NULL,
+	[Cantidad producto] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_DimPedidos] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DimProductos]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DimProductos](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Producto] [varchar](50) NOT NULL,
+	[Codigo_Cultivo] [varchar](10) NOT NULL,
+	[Nombre] [varchar](16) NOT NULL,
+	[Estado] [varchar](12) NOT NULL,
+	[Calidad de cosecha] [varchar](20) NOT NULL,
+	[Cantidad producida] [varchar](6) NOT NULL,
+	[Labso Produccion] [varchar](50) NOT NULL,
+	[Codigo Produccion] [varchar](12) NOT NULL,
+	[Tipo Producto] [varchar](20) NOT NULL,
+	[Precio Producto] [float] NOT NULL,
+	[FechaProduccionId] [varchar](50) NOT NULL,
+	[FechaSiembraId] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_DimProductos_1] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HechosVentas]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HechosVentas](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Venta] [varchar](50) NOT NULL,
+	[ClienteId] [int] NOT NULL,
+	[N_Venta] [varchar](50) NOT NULL,
+	[Metodo_Pago] [varchar](24) NOT NULL,
+	[Monto_Total] [varchar](50) NOT NULL,
+	[Cantidad] [varchar](50) NOT NULL,
+	[Descripcion] [nchar](200) NOT NULL,
+	[Id_Pedido] [int] NOT NULL,
+	[Id_Producto] [int] NOT NULL,
+	[FechaId] [int] NOT NULL,
+ CONSTRAINT [PK_HechosVentas] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[StagingClientes]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[StagingClientes](
+	[Id_Cliente] [nchar](200) NULL,
+	[Codigo] [nchar](200) NULL,
+	[Nombres] [nchar](200) NULL,
+	[Apellidos] [nchar](200) NULL,
+	[Telefono] [nchar](200) NULL,
+	[Direccion] [nchar](200) NULL,
+	[Estado] [nchar](200) NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[StagingPedidos]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[StagingPedidos](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Pedido] [nchar](200) NOT NULL,
+	[Fecha_Pedido] [nchar](200) NOT NULL,
+	[Estado] [nchar](200) NOT NULL,
+	[Cantidad producto] [nchar](200) NOT NULL,
+ CONSTRAINT [PK_StagingPedidos] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[stagingProductos]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[stagingProductos](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Producto] [nchar](200) NULL,
+	[Codigo_Cultivo] [nchar](200) NULL,
+	[Nombre] [nchar](200) NULL,
+	[Estado] [nchar](200) NULL,
+	[Calidad de cosecha] [nchar](200) NULL,
+	[Cantidad producida] [nchar](200) NULL,
+	[Labso Produccion] [nchar](200) NULL,
+	[FechaProduccionId] [nchar](200) NULL,
+	[Codigo Produccion] [nchar](200) NULL,
+	[Tipo Producto] [nchar](200) NULL,
+	[Precio Producto] [nchar](200) NULL,
+	[Fecha SiembraId] [nchar](200) NULL,
+ CONSTRAINT [PK_stagingProductos] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[stagingVentas]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[stagingVentas](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Venta] [nchar](200) NULL,
+	[ClienteId] [nchar](200) NULL,
+	[N_Venta] [nchar](200) NULL,
+	[Metodo_Pago] [nchar](200) NULL,
+	[idFecha] [int] NULL,
+	[Monto_Total] [nchar](200) NULL,
+	[Cantidad] [nchar](200) NULL,
+	[Descripcion] [nchar](200) NULL,
+	[Id_Pedido] [int] NULL,
+	[Id_Producto] [int] NULL,
+ CONSTRAINT [PK_stagingVentas] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [int].[IncrementalLoads]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [int].[IncrementalLoads](
+	[IdIncrementalLoads] [int] NULL,
+	[TableName] [nvarchar](200) NULL,
+	[LoadDate] [datetime] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [int].[Lineage]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [int].[Lineage](
+	[IdLineage] [int] NULL,
+	[Nombretabla] [nvarchar](50) NULL,
+	[StartLoad] [datetime] NULL,
+	[FinishLoad] [datetime] NULL,
+	[LastLoadedDate] [datetime] NULL,
+	[Status] [nvarchar](1) NULL,
+	[type] [nvarchar](1) NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[DimFecha] ADD  CONSTRAINT [DF__DimFecha__EsDiaF__6FE99F9F]  DEFAULT ((0)) FOR [EsDiaFestivo]
+GO
+ALTER TABLE [dbo].[HechosVentas]  WITH CHECK ADD  CONSTRAINT [FK_HechosVentas_DimClientes] FOREIGN KEY([ClienteId])
+REFERENCES [dbo].[DimClientes] ([ID])
+GO
+ALTER TABLE [dbo].[HechosVentas] CHECK CONSTRAINT [FK_HechosVentas_DimClientes]
+GO
+ALTER TABLE [dbo].[HechosVentas]  WITH CHECK ADD  CONSTRAINT [FK_HechosVentas_DimFecha] FOREIGN KEY([FechaId])
+REFERENCES [dbo].[DimFecha] ([FechaId])
+GO
+ALTER TABLE [dbo].[HechosVentas] CHECK CONSTRAINT [FK_HechosVentas_DimFecha]
+GO
+ALTER TABLE [dbo].[HechosVentas]  WITH CHECK ADD  CONSTRAINT [FK_HechosVentas_DimPedidos] FOREIGN KEY([Id_Pedido])
+REFERENCES [dbo].[DimPedidos] ([ID])
+GO
+ALTER TABLE [dbo].[HechosVentas] CHECK CONSTRAINT [FK_HechosVentas_DimPedidos]
+GO
+ALTER TABLE [dbo].[HechosVentas]  WITH CHECK ADD  CONSTRAINT [FK_HechosVentas_DimProductos] FOREIGN KEY([Id_Producto])
+REFERENCES [dbo].[DimProductos] ([ID])
+GO
+ALTER TABLE [dbo].[HechosVentas] CHECK CONSTRAINT [FK_HechosVentas_DimProductos]
+GO
+/****** Object:  StoredProcedure [dbo].[LoadDimClientes]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[LoadDimClientes]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.DimClientes(
+        Id_Cliente,
+        Codigo,
+        Nombres,
+        Apellidos,
+		Telefono,
+		Direccion,
+		Estado
+		
+    )
+    SELECT
+        Id_Cliente,
+		Codigo,
+        Nombres,
+        Apellidos,
+        Telefono,
+		Direccion,
+		Estado
+
+    FROM dbo.StagingClientes;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[LoadDimPedidos]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LoadDimPedidos]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.DimPedidos(
+        Id_Pedido,
+        FechaId,
+        Estado,
+        [Cantidad producto]
+    )
+    SELECT
+        Id_Pedido,
+        Fecha_Pedido,
+        Estado,
+        [Cantidad producto]
+
+    FROM dbo.StagingPedidos;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[LoadDimProductos]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LoadDimProductos]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.DimProductos (
+        Id_Producto,
+        Codigo_Cultivo,
+        Nombre,
+        Estado,
+        [Calidad de cosecha],
+        [Cantidad producida],
+        [Labso Produccion],
+        FechaProduccionId,
+        [Codigo Produccion],
+        [Tipo Producto],
+        [Precio Producto],
+        FechaSiembraId
+    )
+    SELECT
+        Id_Producto,
+        Codigo_Cultivo,
+        Nombre,
+        Estado,
+        [Calidad de cosecha],
+        [Cantidad producida],
+        [Labso Produccion],
+        FechaProduccionId,
+        [Codigo Produccion],
+        [Tipo Producto],
+        [Precio Producto],
+        [Fecha SiembraId]
+    FROM dbo.stagingProductos;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[LoadHechosVentas]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[LoadHechosVentas]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.HechosVentas(
+        Id_Venta,
+        ClienteId,
+        N_Venta,
+        Metodo_Pago,
+        Monto_Total,
+        Cantidad,
+        Descripcion,
+        Id_Pedido,
+        Id_Producto,
+        FechaId
+    )
+    SELECT
+         Id_Venta,
+        ClienteId,
+        N_Venta,
+        Metodo_Pago,
+        Monto_Total,
+        Cantidad,
+        Descripcion,
+        Id_Pedido,
+        Id_Producto,
+        idFecha
+    FROM dbo.stagingVentas
+	where Id_Pedido IN (Select ID FROM DimPedidos);
+END;
+GO
+/****** Object:  StoredProcedure [int].[Get_LastLoadedDate]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+create   PROCEDURE [int].[Get_LastLoadedDate]
+@TableName nvarchar(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+	-- If the procedure is executed with a wrong table name, throw an error.
+	IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = @TableName AND type = N'U')
+	BEGIN
+        PRINT N'The table does not exist in the data warehouse.';
+        THROW 51000, N'The table does not exist in the data warehouse.', 1;
+        RETURN -1;
+	END
+	
+    -- If the table exists, but was never loaded before, there won't be a record for it in the table
+	-- A record is created for the @TableName, with the minimum possible date in the LoadDate column
+	IF NOT EXISTS (SELECT 1 FROM [int].[IncrementalLoads] WHERE TableName = @TableName)
+		INSERT INTO [int].IncrementalLoads ([TableName], [LoadDate])
+		SELECT @TableName, '1753-01-01'
+
+    -- Select the LoadDate for the @TableName
+	SELECT 
+		[LoadDate] AS [LoadDate]
+    FROM [int].[IncrementalLoads]
+    WHERE 
+		[TableName] = @TableName;
+
+
+
+    RETURN 0;
+END;
+GO
+/****** Object:  StoredProcedure [int].[Get_LineageKey]    Script Date: 18/06/2025 11:56:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [int].[Get_LineageKey]
+@LoadType nvarchar(1),
+@TableName nvarchar(100),
+@LastLoadedDate datetime
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+-- The load for @TableName starts now 
+DECLARE @StartLoad datetime = SYSDATETIME();
+
+/* 
+A new row is inserted into the Lineage table, with the table name that will be loaded,
+the starting date of the load, load type and load status.
+Possible values for Type:
+- F = Full load
+- I = Incremental load
+
+Possible values for Status:
+- P = In progress
+- E = Error
+- S = Success
+*/
+INSERT INTO [int].[Lineage](
+	 [Nombretabla]
+	,[StartLoad]
+	,[FinishLoad]
+	,[Status]
+	,[Type]
+	,[LastLoadedDate]
+	)
+VALUES (
+	 @TableName
+	,@StartLoad
+	,NULL
+	,'P'
+	,@LoadType
+	,@LastLoadedDate
+	);
+
+-- If we're doing an initial load, remove the date of the most recent load for this table
+IF (@LoadType = 'F')
+	BEGIN
+		UPDATE [int].[IncrementalLoads]
+		SET LoadDate = '1753-01-01'
+		WHERE TableName = @TableName
+
+		--EXEC('TRUNCATE TABLE ' + @TableName)
+	END;
+
+-- Select the key of the previously inserted row
+SELECT MAX(IdLineage) AS LineageKey
+FROM [int].[Lineage]
+WHERE 
+	[Nombretabla] = @TableName
+	AND [StartLoad] = @StartLoad
+
+RETURN 0;
+END;
+GO

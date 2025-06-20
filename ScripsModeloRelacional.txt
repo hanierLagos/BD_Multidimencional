@@ -1,0 +1,331 @@
+USE [ControlVentas_FincaBarillasREL]
+GO
+/****** Object:  User [allan]    Script Date: 18/06/2025 11:54:31 ******/
+CREATE USER [allan] FOR LOGIN [allan] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [allan]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [allan]
+GO
+/****** Object:  Table [dbo].[Clientes]    Script Date: 18/06/2025 11:54:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Clientes](
+	[Id_Cliente] [int] IDENTITY(1,1) NOT NULL,
+	[Codigo] [varchar](10) NULL,
+	[Nombres] [varchar](32) NOT NULL,
+	[Apellidos] [varchar](50) NOT NULL,
+	[Telefono] [varchar](28) NOT NULL,
+	[Direccion] [varchar](max) NOT NULL,
+	[Estado] [smallint] NOT NULL,
+ CONSTRAINT [PK_Cliente] PRIMARY KEY NONCLUSTERED 
+(
+	[Id_Cliente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Detalle_Pedido]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Detalle_Pedido](
+	[Id_DetallePedido] [int] IDENTITY(1,1) NOT NULL,
+	[PedidoId] [int] NOT NULL,
+	[ProductoId] [int] NOT NULL,
+	[Cantidad] [float] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id_DetallePedido] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Detalle_Venta]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Detalle_Venta](
+	[Id_DetalleVenta] [int] IDENTITY(1,1) NOT NULL,
+	[VentaId] [int] NOT NULL,
+	[ProductoId] [int] NOT NULL,
+	[Descripcion] [varchar](max) NOT NULL,
+	[Precio_Producto] [float] NOT NULL,
+	[Cantidad_Producto] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id_DetalleVenta] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Pedidos]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pedidos](
+	[Id_Pedido] [int] IDENTITY(1,1) NOT NULL,
+	[ClienteId] [int] NOT NULL,
+	[Fecha_Pedido] [datetime] NOT NULL,
+	[Estado] [varchar](32) NULL,
+ CONSTRAINT [PK_Pedido] PRIMARY KEY NONCLUSTERED 
+(
+	[Id_Pedido] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Producciones]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Producciones](
+	[Id_Produccion] [int] IDENTITY(1,1) NOT NULL,
+	[ProductoId] [int] NOT NULL,
+	[Codigo_Produccion] [varchar](10) NOT NULL,
+	[Calidad_Cosecha] [varchar](48) NOT NULL,
+	[Fecha_Produccion] [date] NOT NULL,
+	[Cantidad_Producida] [float] NOT NULL,
+	[Labso_Produccion] [int] NOT NULL,
+ CONSTRAINT [PK_Produccion] PRIMARY KEY NONCLUSTERED 
+(
+	[Id_Produccion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Productos]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Productos](
+	[Id_Producto] [int] IDENTITY(1,1) NOT NULL,
+	[Codigo_Cultivo] [varchar](10) NULL,
+	[Nombre] [varchar](16) NOT NULL,
+	[TipoId] [int] NOT NULL,
+	[Fecha_Siembra] [datetime] NOT NULL,
+	[Estado] [smallint] NOT NULL,
+ CONSTRAINT [PK_Productos] PRIMARY KEY NONCLUSTERED 
+(
+	[Id_Producto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Tipo_Producto]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tipo_Producto](
+	[Id_Tipo] [int] IDENTITY(1,1) NOT NULL,
+	[Description] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Tipo_Producto] PRIMARY KEY NONCLUSTERED 
+(
+	[Id_Tipo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Ventas]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Ventas](
+	[Id_Venta] [int] IDENTITY(1,1) NOT NULL,
+	[ClienteId] [int] NOT NULL,
+	[N_Venta] [int] NOT NULL,
+	[Metodo_Pago] [varchar](24) NOT NULL,
+	[Fecha_Venta] [date] NOT NULL,
+	[Monto_Total] [numeric](10, 2) NOT NULL,
+ CONSTRAINT [PK_Venta] PRIMARY KEY NONCLUSTERED 
+(
+	[Id_Venta] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Detalle_Pedido]  WITH CHECK ADD  CONSTRAINT [FK_DetallePedido_Pedido] FOREIGN KEY([PedidoId])
+REFERENCES [dbo].[Pedidos] ([Id_Pedido])
+GO
+ALTER TABLE [dbo].[Detalle_Pedido] CHECK CONSTRAINT [FK_DetallePedido_Pedido]
+GO
+ALTER TABLE [dbo].[Detalle_Pedido]  WITH CHECK ADD  CONSTRAINT [FK_DetallePedido_Producto] FOREIGN KEY([ProductoId])
+REFERENCES [dbo].[Productos] ([Id_Producto])
+GO
+ALTER TABLE [dbo].[Detalle_Pedido] CHECK CONSTRAINT [FK_DetallePedido_Producto]
+GO
+ALTER TABLE [dbo].[Detalle_Venta]  WITH CHECK ADD  CONSTRAINT [FK_DetalleVenta_Producto] FOREIGN KEY([ProductoId])
+REFERENCES [dbo].[Productos] ([Id_Producto])
+GO
+ALTER TABLE [dbo].[Detalle_Venta] CHECK CONSTRAINT [FK_DetalleVenta_Producto]
+GO
+ALTER TABLE [dbo].[Detalle_Venta]  WITH CHECK ADD  CONSTRAINT [FK_DetalleVenta_Venta] FOREIGN KEY([VentaId])
+REFERENCES [dbo].[Ventas] ([Id_Venta])
+GO
+ALTER TABLE [dbo].[Detalle_Venta] CHECK CONSTRAINT [FK_DetalleVenta_Venta]
+GO
+ALTER TABLE [dbo].[Pedidos]  WITH CHECK ADD  CONSTRAINT [FK_Pedido_Cliente] FOREIGN KEY([ClienteId])
+REFERENCES [dbo].[Clientes] ([Id_Cliente])
+GO
+ALTER TABLE [dbo].[Pedidos] CHECK CONSTRAINT [FK_Pedido_Cliente]
+GO
+ALTER TABLE [dbo].[Producciones]  WITH CHECK ADD  CONSTRAINT [FK_Produccion_Producto] FOREIGN KEY([ProductoId])
+REFERENCES [dbo].[Productos] ([Id_Producto])
+GO
+ALTER TABLE [dbo].[Producciones] CHECK CONSTRAINT [FK_Produccion_Producto]
+GO
+ALTER TABLE [dbo].[Productos]  WITH CHECK ADD  CONSTRAINT [FK_TipoProducto_Producto] FOREIGN KEY([TipoId])
+REFERENCES [dbo].[Tipo_Producto] ([Id_Tipo])
+GO
+ALTER TABLE [dbo].[Productos] CHECK CONSTRAINT [FK_TipoProducto_Producto]
+GO
+ALTER TABLE [dbo].[Ventas]  WITH CHECK ADD  CONSTRAINT [FK_Venta_Cliente] FOREIGN KEY([ClienteId])
+REFERENCES [dbo].[Clientes] ([Id_Cliente])
+GO
+ALTER TABLE [dbo].[Ventas] CHECK CONSTRAINT [FK_Venta_Cliente]
+GO
+/****** Object:  StoredProcedure [dbo].[GetClientesFrecuentes]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetClientesFrecuentes]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        C.Id_Cliente,
+        C.Nombres,
+        C.Apellidos,
+        COUNT(P.Id_Pedido) AS TotalPedidos
+    FROM dbo.Clientes C
+    INNER JOIN dbo.Pedidos P ON C.Id_Cliente = P.ClienteId
+    GROUP BY C.Id_Cliente, C.Nombres, C.Apellidos
+    ORDER BY TotalPedidos DESC;
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Load_StagingClientes]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Load_StagingClientes]
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    SELECT 
+        'FBY|' + CONVERT(NVARCHAR, Id_Cliente )                AS [_SourceKey],
+        CONVERT(NVARCHAR(100), Codigo)                AS [Codigo],
+        CONVERT(NVARCHAR(100), Nombres)                  AS [Nombres],
+		CONVERT(NVARCHAR(100), Apellidos)                  AS [Apellidos],
+		CONVERT(NVARCHAR(100), Telefono)                  AS [Telefono], 
+		CONVERT(NVARCHAR(100), Direccion)                  AS [Dirección], 
+		CONVERT(NVARCHAR(100), Estado)                  AS [Estado]
+
+
+    FROM 
+        dbo.Clientes c;
+
+    RETURN 0;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[Load_StagingPedidos]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Load_StagingPedidos]
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    SELECT 
+        'FBY|' + CONVERT(NVARCHAR, p.Id_Pedido )                AS [_SourceKey],
+        CONVERT(NVARCHAR(100), Fecha_Pedido)                AS [Fecha pedido],
+        CONVERT(NVARCHAR(100), Estado )                  AS [Estado],
+		CONVERT(NVARCHAR(100), Cantidad)                  AS [Cantidad]
+		
+
+
+    FROM 
+        dbo.Detalle_Pedido d
+		inner join Pedidos as p on p.Id_Pedido = d.PedidoId 
+
+    RETURN 0;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[Load_StagingProductos]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Load_StagingProductos]
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    SELECT 
+        'FBY|' + CONVERT(NVARCHAR, Id_Producto )                AS [_SourceKey],
+        CONVERT(NVARCHAR(100), Codigo_Cultivo)                AS [Codigo],
+        CONVERT(NVARCHAR(100), Nombre)                  AS [Nombres],
+		CONVERT(NVARCHAR(100), Estado)                  AS [Estado],
+		CONVERT(NVARCHAR(100), pr.[Calidad_Cosecha])    AS [Calidad de cosecha],
+		CONVERT(NVARCHAR(100), pr.Cantidad_Producida)    AS [Cantidad Producida],
+		CONVERT(NVARCHAR(100), pr.Labso_Produccion)    AS [Lapso de tiempo],
+		CONVERT(NVARCHAR(100), pr.Fecha_Produccion)    AS [Fecha de produccion],
+		CONVERT(NVARCHAR(100), pr.Codigo_Produccion)    AS [Codigo de produccion],
+		CONVERT(NVARCHAR(100), tp.Description)    AS [Tipo de producto],
+		CONVERT(NVARCHAR(100), dv.Precio_Producto) AS [Precio Producto], 
+		CONVERT(NVARCHAR(100), Fecha_Siembra)           AS [FechaSiembra]
+		
+
+
+    FROM 
+        dbo.Productos p
+		inner join Producciones as pr on p.Id_Producto = pr.ProductoId
+		inner join Tipo_Producto as tp on p.TipoId = tp.Id_Tipo
+		inner join Detalle_Venta as dv on p.Id_Producto = dv.ProductoId
+
+    RETURN 0;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[Load_StagingVentas]    Script Date: 18/06/2025 11:54:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Load_StagingVentas]
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    SELECT 
+        'FBY|' + CONVERT(NVARCHAR, v.Id_Venta )                AS [_SourceKey],
+        CONVERT(int, v.ClienteId)                AS [ClienteId],
+        CONVERT(NVARCHAR(100), v.N_Venta)                  AS [NumVenta],
+		CONVERT(NVARCHAR(100), v.Metodo_Pago)                  AS [MetodoPago],
+		CONVERT(NVARCHAR(100), v.Monto_Total)    AS [MontoTotal],
+		CONVERT(NVARCHAR(100), dv.Cantidad_Producto)    AS [Cantidad],
+		CONVERT(NVARCHAR(100), dv.Descripcion)    AS [Descripcion],
+		CONVERT(int, p.Id_Pedido)    AS [IdPedido],
+		CONVERT(int, dv.ProductoId)    AS [IdProducto],
+		CAST(CONVERT(NVARCHAR(8), v.Fecha_Venta, 112) AS INT) AS [idFecha]
+
+    FROM 
+        dbo.Ventas as v
+		 inner join Detalle_Venta as dv on v.Id_Venta = dv.VentaId 
+		 inner join Clientes as c on v.ClienteId = c.Id_Cliente
+		 inner join Pedidos as p on c.Id_Cliente = p.ClienteId
+
+
+    RETURN 0;
+END;
+GO
